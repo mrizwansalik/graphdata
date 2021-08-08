@@ -12,12 +12,17 @@ function App() {
 
   const addVertices = () => {
     setVertices([...vertices, node]);
-    setSource([...source, node]);
-    setTarget([...target, node]);
+    setSource([...vertices, node]);
+    setTarget([...vertices, node]);
     setNode({});
   };
   const changeEdge = (e) => {
     setRel({ ...rel, [e.target.name]: e.target.value });
+    if (e.target.name === "source") {
+      setTarget([...vertices.filter(ver => ver.id != e.target.value)])
+    } else if (e.target.name === "target") {
+      setSource([...vertices.filter((ver) => ver.id != e.target.value)]);
+    }
   }
   const changeDropdown = () => {
     
@@ -29,7 +34,10 @@ function App() {
   const handleChange = (e) => {
     setNode({ ...node, [e.target.name]: e.target.value })
   };
-  console.log(' vertices', vertices, edges)
+  // React.useEffect(() => {
+    
+  // },[])
+  // console.log(' vertices', vertices, edges)
   return (
     <div className="App container">
       <h1 className="text-center">Thor Task</h1>
@@ -64,7 +72,7 @@ function App() {
             className="btn btn-success float-end mr-2"
             onClick={addVertices}
           >
-            Submit
+            Add Node
           </button>
         </div>
         <div className="col-md-12">
@@ -124,11 +132,11 @@ function App() {
           </select>
           <br />
           <button className="btn btn-success float-end mr-2" onClick={addEdge}>
-            Submit
+            Make Edge
           </button>
         </div>
         <div className="col-md-12s">
-          <Canvas data={vertices} />
+          <Canvas data={{vertices, edges}} />
         </div>
       </div>
     </div>
